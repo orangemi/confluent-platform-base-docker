@@ -11,4 +11,9 @@ RUN mkdir /opt && \
   tar xfz /tmp/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tgz -C /opt && \
   rm /tmp/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tgz
 
-WORKDIR /opt/confluent-${CONFLUENT_VERSION}
+ENV CONNECT_HOME="/opt/confluent-${CONFLUENT_VERSION}"
+WORKDIR ${CONNECT_HOME}
+ADD worker.properties ${CONNECT_HOME}/etc
+ADD configure.sh entrypoint.sh ${CONNECT_HOME}/
+
+CMD ["./entrypoint.sh"]
